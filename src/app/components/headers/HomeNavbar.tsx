@@ -23,7 +23,12 @@ interface HomeNavbarProps {
   onDeleteAll: () => void;
   setSignupOpen: (isOpen: boolean) => void;
   setLoginOpen: (isOpen: boolean) => void;
+  handleLogoutClick: (e: React.MouseEvent<HTMLElement>) => void;
+  anchorEl: HTMLElement | null;
+  handleCloseLogout: () => void;
+  handleLogoutRequest: () => void;
 }
+
 export default function HomeNavbar(props: HomeNavbarProps) {
   const {
     cartItems,
@@ -33,6 +38,10 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     onDeleteAll,
     setSignupOpen,
     setLoginOpen,
+    handleLogoutClick,
+    anchorEl,
+    handleCloseLogout,
+    handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
 
@@ -103,12 +112,16 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                     : "/icons/default-user.svg"
                 }
                 aria-haspopup={"true"}
+                onClick={handleLogoutClick}
               />
             )}
 
             <Menu
+              anchorEl={anchorEl}
               id="account-menu"
-              open={false}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseLogout}
+              onClick={handleCloseLogout}
               PaperProps={{
                 elevation: 0,
                 sx: {
@@ -138,7 +151,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem>
+              <MenuItem onClick={handleLogoutRequest}>
                 <ListItemIcon>
                   <Logout fontSize="small" style={{ color: "blue" }} />
                 </ListItemIcon>
